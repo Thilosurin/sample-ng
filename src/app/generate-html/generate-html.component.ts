@@ -40,11 +40,9 @@ export class GenerateHtmlComponent implements OnInit {
       html.textContent,
     ];
 
-    console.log("res => ", currentSrc)
-
     let htmlStr: string = '<' + tag;
     currentSrc && (htmlStr += ' src="' + currentSrc + '"');
-    link && (htmlStr += ' href="' + 'link' + '"');
+    link && (htmlStr += ' href="' + link + '"');
     className && (htmlStr += ' class="' + className + '"');
 
     if (tag == 'img') {
