@@ -1,0 +1,45 @@
+<div class="col-12">
+  <div class="row">
+    <div *ngFor="let item of images" class="col-2">
+      <div
+        style="
+          display: flex;
+          margin-bottom: 4.5rem;
+          align-items: center;
+          background-color: white;
+          border-radius: 5px;
+          height: 300px;
+        "
+      >
+        <div
+          style="
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 82%;
+          "
+        >
+          <a target="_blank" [href]="item.productImageUrl">
+            <img
+              [src]="item.productImageUrl"
+              style="
+                width: 150px;
+                height: 150px;
+                border: 0.5px solid #f6e4f8;
+                border-radius: 5px;
+                opacity: 1;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+              "
+              alt="Cinque Terre"
+            />
+          </a>
+        </div>
+        <div class="desc" style="padding: 15px; text-align: center">
+          {{ item.productDescription }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

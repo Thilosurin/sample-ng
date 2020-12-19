@@ -1,0 +1,35 @@
+<p
+  *ngIf="label"
+  class="label-input-port"
+  [style.marginBottom]="labelMB"
+  [style.fontWeight]="fontWeight"
+  [style.marginTop]="mt"
+  [style.width]="width"
+>
+  {{ label }} <span *ngIf="required" style="color: crimson">*</span>
+</p>
+
+<div class="wrap-input">
+  <input
+    type="text"
+    style="color: inherit"
+    [style.width]="width"
+    [style.border]="showError() ? '1px solid crimson' : border"
+    [style.borderRadius]="borderRadius"
+    [style.padding]="padding"
+    [style.background]="background"
+    [formControl]="control"
+    [placeholder]="placeholder"
+  />
+  &nbsp;<label
+    style="margin-top: auto; margin-bottom: unset"
+    [style.width]="labelWidth"
+    *ngIf="unit"
+    >{{ unit }}</label
+  >
+</div>
+<ng-container *ngIf="showError()">
+  <p *ngIf="control.hasError('required')" class="text-error">
+    This field is Required!
+  </p>
+</ng-container>

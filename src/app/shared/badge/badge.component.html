@@ -1,0 +1,21 @@
+<div class="badge-container">
+  <p
+    class="badge"
+    [style.color]="color"
+    [style.border]="border"
+    [style.padding]="padding"
+    [style.borderRadius]="borderRadius"
+    [style.backgroundColor]="backgroundColor"
+    *ngIf="label"
+  >
+    {{ label }}
+  </p>
+  <i
+    class="pi pi-times"
+    [style.color]="iconColor"
+    [style.fontSize]="iconSize"
+    [style.fontWeight]="iconWeight"
+    style="cursor: pointer"
+    (click)="onRemove.emit()"
+  ></i>
+</div>

@@ -1,0 +1,77 @@
+<div class="card">
+  <h5>Frozen Columns</h5>
+  <!-- [columns]="scrollableCols"
+  [frozenColumns]="frozenCols" -->
+  <p-table
+    [value]="customers"
+    [scrollable]="true"
+    scrollHeight="1000px"
+    frozenWidth="250px"
+    [rowHover]="true"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [filterDelay]="0"
+  >
+    <ng-template pTemplate="frozencolgroup" let-columns>
+      <colgroup>
+        <col style="width: 250px" />
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="colgroup" let-columns>
+      <colgroup>
+        <col style="width: 200px" *ngFor="let item of scrollableCols" />
+      </colgroup>
+      <!-- <colgroup>
+        <col style="width: 200px" *ngFor="let item of scrollableCols" />
+      </colgroup> -->
+    </ng-template>
+    <ng-template pTemplate="frozenheader">
+      <tr>
+        <th style="width: 250px; height: 84px">Name</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="header" let-record>
+      <tr>
+        <th
+          *ngFor="let item of scrollableCols"
+          style="width: 250px; height: 84px"
+        >
+          {{ item.header }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="frozenbody" let-record let-rowIndex="rowIndex">
+      <tr>
+        <td style="width: 250px">{{ record.name }}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-record let-rowIndex="rowIndex">
+      <tr>
+        <td *ngFor="let item of scrollableCols" style="width: 200px">
+          {{ record[item.field] }}
+        </td>
+      </tr>
+      <tr *ngFor="let pack of record.packs; let packIndex = index">
+        <td style="width: 250px">
+          <button
+            *ngIf="packIndex !== record.packs.length - 1"
+            (click)="removePack(rowIndex, packIndex)"
+          >
+            DELETE
+          </button>
+          <button
+            *ngIf="packIndex === record.packs.length - 1"
+            (click)="addNewPack(rowIndex)"
+          >
+            add new pack
+          </button>
+        </td>
+        <td style="width: 200px" *ngFor="let item of pack | keyvalue">
+          {{ item.value }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

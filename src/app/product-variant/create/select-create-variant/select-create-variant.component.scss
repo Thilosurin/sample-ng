@@ -1,0 +1,14 @@
+.select-create-variant {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+
+  .select-create-variant-card {
+    flex: 0 0 30%;
+    text-align: center;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,17 @@
+.label-input-port {
+  font-family: "Sarabun" !important;
+}
+
+.wrap-input {
+  display: flex;
+  input {
+    outline: none;
+  }
+}
+
+.text-error {
+  color: crimson !important;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  font-family: "Sarabun" !important;
+}

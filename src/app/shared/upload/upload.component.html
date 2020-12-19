@@ -1,0 +1,30 @@
+<input
+  #fileRef
+  multiple
+  type="file"
+  id="fileRef"
+  style="width: 1px; visibility: hidden"
+  (change)="onFileDroppedSubject.next($event.target.files)"
+/>
+
+<div
+  DragFilesUpload
+  class="uploadBox"
+  (onFileDropped)="onFileDroppedSubject.next($event)"
+></div>
+
+<div class="list-pic" cdkDropList (cdkDropListDropped)="drop($event)">
+  <div cdkDrag *ngFor="let img of files$ | async">
+    <ng-container *ngIf="calLoadingTime$ | async as time">
+      <p-progressBar *ngIf="100 > time" [value]="time"></p-progressBar>
+      <img
+        *ngIf="time === 100"
+        [src]="img.image"
+        alt=""
+        width="300px"
+        height="250px"
+        style="object-fit: contain"
+      />
+    </ng-container>
+  </div>
+</div>

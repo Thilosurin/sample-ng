@@ -1,0 +1,187 @@
+<div class="product-detail-box" *ngIf="variantAttrForm.length">
+  <ng-container
+    *ngFor="let variantAttr of variantAttrForm.controls; let i = index"
+  >
+    <ng-container *ngIf="selectedVariantAttr === i">
+      <div
+        class="wrap-form"
+        *ngFor="
+          let varAttrCtrl of formArr({ f: variantAttr, k: 'variantAttr' })
+            .controls
+        "
+      >
+        <p class="pd-heading">{{ varAttrCtrl.get("variantAttrName").value }}</p>
+        <c-input
+          width="70%"
+          (keyup.enter)="
+            pushFormArr({ f: variantAttrValue(varAttrCtrl), e: $event });
+            generateVariant()
+          "
+        ></c-input>
+        <div class="badge-group">
+          <c-badge
+            [label]="attr.value"
+            *ngFor="
+              let attr of variantAttrValue(varAttrCtrl).controls;
+              let i = index
+            "
+            (onRemove)="
+              removeAttrVariant({ f: variantAttrValue(varAttrCtrl), i: i })
+            "
+          ></c-badge>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>
+
+<div class="btn-create-product-group">
+  <ng-container *ngIf="variantAttrForm.length">
+    <button
+      class="btn-create-pg"
+      style="width: 135px"
+      (click)="selectedVariantAttr = i"
+      [ngClass]="{ active: selectedVariantAttr === i }"
+      *ngFor="let valueCtrl of variantAttrForm.value; let i = index"
+    >
+      {{ valueCtrl.variantTitle }}
+    </button>
+  </ng-container>
+  <button class="btn-create-pg" (click)="displayModal = true">
+    <i class="pi pi-plus"></i>
+    create_product_group
+  </button>
+</div>
+
+<section>
+  <!-- <app-upload></app-upload>
+  <p-fileUpload
+    name="demo[]"
+    url="./upload.php"
+    (onUpload)="onUpload($event)"
+    multiple="multiple"
+    accept="image/*"
+    maxFileSize="1000000"
+  >
+    <ng-template pTemplate="content">
+      <ul *ngIf="uploadedFiles.length">
+        <li *ngFor="let file of uploadedFiles">
+          {{ file.name }} - {{ file.size }} bytes
+        </li>
+      </ul>
+    </ng-template>
+  </p-fileUpload> -->
+
+  <div class="heading-product-info">
+    <p class="number">1</p>
+    <p class="title_head_step">product_data</p>
+  </div>
+  <h2 style="text-align: center; margin-top: 2rem">product</h2>
+
+  <p-card
+    *ngFor="let variantCtrl of havePacksInVariant.controls; let i = index"
+  >
+    <p-card>
+      <c-panel
+        header="SKU สินค้า"
+        [control]="variantCtrl.get('productSku')"
+      ></c-panel>
+      <c-panel
+        header="บาร์โค๊ด"
+        [control]="variantCtrl.get('productBarcode')"
+      ></c-panel>
+      <p-card>
+        <p
+          *ngFor="
+            let img of formArr({ f: variantCtrl, k: 'productImagesUrl' })
+              .controls
+          "
+        >
+          {{ img.value }}
+        </p>
+      </p-card>
+      <c-panel
+        header="หน่วย"
+        [control]="variantCtrl.get('productUnit')"
+      ></c-panel>
+      <c-panel
+        header="จำนวนขั้นต่ำ"
+        [control]="variantCtrl.get('minQty')"
+      ></c-panel>
+      <c-panel
+        header="จำนวนผลิตภัณฑ์ที่จะขายส่ง"
+        [control]="variantCtrl.get('minWholesaleQty')"
+      ></c-panel>
+      <p-card>
+        <h4>Product List</h4>
+        <br />
+        <ng-container
+          *ngFor="
+            let price of formGroup({ k: 'productPrice', i: i }).controls
+              | keyvalue;
+            let priceIdx = index
+          "
+        >
+          <ng-container [ngSwitch]="price.key">
+            <c-panel
+              *ngSwitchDefault
+              [header]="price.key"
+              [control]="price.value"
+            ></c-panel>
+            <ng-container *ngSwitchCase="'priceList'">
+              <p-card *ngFor="let p of price.value.controls; let pIdx = index">
+                <p>price list {{ pIdx + 1 }}</p>
+                <c-panel header="title" [control]="p.get('title')"></c-panel>
+                <c-panel header="price" [control]="p.get('price')"></c-panel>
+              </p-card>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </p-card>
+    </p-card>
+  </p-card>
+  <button (click)="addVariant()">Add Variant</button>
+</section>
+
+<p-dialog
+  header="สร้างกลุ่มสินค้า"
+  [(visible)]="displayModal"
+  [modal]="true"
+  [style]="{ width: '500px' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+  [formGroup]="dialogForm"
+>
+  <div class="wrap-form-dialog">
+    product_group
+    <c-input width="100%" [control]="dialogForm.get('variantTitle')"></c-input>
+  </div>
+  <div class="wrap-form-dialog">
+    product_type
+    <c-input
+      width="100%"
+      (keyup.enter)="pushFormArr({ f: dialogVariantAttr, e: $event })"
+    >
+    </c-input>
+  </div>
+  <div class="badge-group" [style]="{ 'margin-bottom': '1rem' }">
+    <c-badge
+      [label]="item"
+      *ngFor="let item of dialogVariantAttr.value; let i = index"
+      (onRemove)="dialogVariantAttr.removeAt(i)"
+    >
+    </c-badge>
+  </div>
+  <ng-template pTemplate="footer">
+    <div class="button-group">
+      <button class="btn green" (click)="submitDialog()">confirm</button>
+      <button
+        class="btn red"
+        (click)="displayModal = false; dialogForm = getDialogForm"
+      >
+        cancel
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>
